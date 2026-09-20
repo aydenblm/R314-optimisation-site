@@ -33,6 +33,12 @@ python3 -m http.server 8000
 
 Puis <http://localhost:8000>.
 
+Live Server (VS Code) fait aussi l'affaire pour éditer, mais **pas pour
+mesurer** : il injecte un script de rechargement dans chaque page. Et aucun
+serveur local ne compresse les fichiers texte, contrairement à GitHub Pages —
+vos relevés de référence se font donc sur le site en ligne. Le détail est dans
+la [méthodologie](https://nico3807.github.io/R314-optimisation-site/methodologie.html).
+
 Un widget de mesure est intégré, désactivé par défaut pour ne pas fausser vos
 relevés. Activez-le avec `?perf=1` :
 <http://localhost:8000/index.html?perf=1>.

@@ -65,8 +65,29 @@
 <tr><td>+ images recompressées</td><td></td><td></td><td></td><td></td><td></td></tr>
 <tr><td>+ …</td><td></td><td></td><td></td><td></td><td></td></tr>
 </tbody></table></div>
+<h2>Où mesurer : en local ou en ligne ?</h2>
+<p>Les deux, mais pas pour la même chose.</p>
+<div class="docs-table"><table>
+<thead><tr><th></th><th>Serveur local</th><th>Site déployé</th></tr></thead>
+<tbody>
+<tr><td>Itérer, recharger, tester une idée</td><td>✅</td><td>lent</td></tr>
+<tr><td>Relevés de référence, avant/après</td><td>❌</td><td>✅</td></tr>
+</tbody></table></div>
+<p>La raison tient en un mot : <strong>la compression</strong>. Aucun serveur local ne compresse les fichiers texte, alors qu'un hébergeur sert du gzip ou du brotli. Sur ce site :</p>
+<div class="docs-table"><table>
+<thead><tr><th>Fichier</th><th>Servi en local</th><th>Servi par GitHub Pages</th></tr></thead>
+<tbody>
+<tr><td><code>css/styles.css</code></td><td>90,5 Ko</td><td>7,3 Ko (−92 %)</td></tr>
+<tr><td><code>css/extra.css</code></td><td>28,8 Ko</td><td>2,2 Ko (−93 %)</td></tr>
+<tr><td><code>index.html</code></td><td>8,3 Ko</td><td>2,9 Ko (−65 %)</td></tr>
+</tbody></table></div>
+<p>Conséquence directe pour votre audit : mesuré en local, le CSS inutilisé paraît <strong>dix fois plus coûteux</strong> qu'il ne l'est en production. Si vous bâtissez vos priorités là-dessus, vous passerez du temps sur le mauvais problème. Les images, elles, sont déjà compressées : gzip n'y change rien, et leur poids est le même partout.</p>
+<p>C'est aussi un enseignement en soi : <em>une optimisation se juge dans les conditions de production, pas dans les conditions de développement.</em></p>
+<h3>Le cas de Live Server</h3>
+<p>L'extension Live Server de VS Code est pratique pour éditer — le rechargement automatique évite des centaines de <kbd>Ctrl</kbd>+<kbd>R</kbd>. Mais elle <strong>injecte dans chaque page</strong> un script de rechargement (~1,2 Ko) et ouvre une WebSocket. Les deux apparaissent dans vos relevés : un <code>&lt;script&gt;</code> de plus dans le DOM, une connexion de plus dans l'onglet Réseau, un poids de document supérieur à celui du fichier réel.</p>
+<p>Même famille de problème que le widget <code>?perf=1</code> : <strong>un outil de mesure qui modifie ce qu'il mesure</strong>. Utilisez Live Server pour travailler, pas pour relever.</p>
 <h2>Pièges de mesure classiques</h2>
-<ul><li><strong>Mesurer en <code>file://</code>.</strong> Pas de vrai réseau, pas de vrais en-têtes. Servez toujours en HTTP (<code>python3 -m http.server 8000</code>).</li><li><strong>Oublier de vider le cache.</strong> Le deuxième chargement est toujours rapide.</li><li><strong>Mesurer une seule fois.</strong> La variance est réelle, faites trois essais.</li><li><strong>Mesurer avec des extensions actives.</strong> Elles injectent du code.</li><li><strong>Mesurer trop court.</strong> Certains problèmes ne se déclenchent pas dans les trois premières secondes.</li><li><strong>Mesurer sur un seul format d'écran.</strong> Voir plus haut : mobile et desktop ne montrent pas les mêmes choses.</li></ul>
+<ul><li><strong>Mesurer en <code>file://</code>.</strong> Pas de vrai réseau, pas de vrais en-têtes. Servez toujours en HTTP (<code>python3 -m http.server 8000</code>).</li><li><strong>Confondre poids local et poids réel.</strong> Voir ci-dessus : sans gzip, les fichiers texte paraissent bien plus lourds qu'ils ne le sont en ligne.</li><li><strong>Mesurer à travers un serveur qui injecte du code.</strong> Live Server, et la plupart des outils à rechargement automatique.</li><li><strong>Oublier de vider le cache.</strong> Le deuxième chargement est toujours rapide.</li><li><strong>Mesurer une seule fois.</strong> La variance est réelle, faites trois essais.</li><li><strong>Mesurer avec des extensions actives.</strong> Elles injectent du code.</li><li><strong>Mesurer trop court.</strong> Certains problèmes ne se déclenchent pas dans les trois premières secondes.</li><li><strong>Mesurer sur un seul format d'écran.</strong> Voir plus haut : mobile et desktop ne montrent pas les mêmes choses.</li></ul>
 </main>
 <footer class="docs-foot">
   <div class="docs-wrap">R3.14 — BUT MMI Béziers</div>
