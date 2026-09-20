@@ -22,9 +22,41 @@
 <p>Un client vous confie un site vitrine existant. Il se plaint : « c'est lent, et sur mon portable ça rame après quelques secondes ». Votre mission n'est pas de le refaire, mais de le <strong>rendre rapide sans rien changer à ce qu'il voit</strong>.</p>
 <h2>Ce que vous devez produire</h2>
 <h3>1. Un audit initial</h3>
-<p>Avant toute modification, relevez l'état des lieux :</p>
-<ul><li>capture de l'onglet <strong>Réseau</strong> (avec la ligne de total : requêtes + poids) ;</li><li>capture du rapport <strong>Lighthouse</strong> (mobile <em>et</em> desktop, les deux profils ne donnent pas les mêmes résultats — ce n'est pas un hasard) ;</li><li>un enregistrement <strong>Performance</strong> d'au moins <strong>20 secondes</strong> sur la page d'accueil, avec de l'interaction (scroll) pendant l'enregistrement.</li></ul>
-<blockquote><p>⚠️ Les 20 secondes ne sont pas arbitraires. Un enregistrement de 3 secondes vous fera rater une partie des problèmes.</p></blockquote>
+<p>Avant de modifier une seule ligne, vous devez savoir d'où vous partez. Sinon vous ne pourrez prouver aucun gain à la fin.</p>
+<p>Tout se fait dans les <strong>outils de développement du navigateur</strong> (« DevTools »), intégrés à Chrome et à Edge. Ce qui suit utilise leurs noms français ; en anglais, Réseau = <em>Network</em>, Performances = <em>Performance</em>.</p>
+<h4>Ouvrir les outils</h4>
+<div class="docs-table"><table>
+<thead><tr><th>Action</th><th>Windows / Linux</th><th>macOS</th></tr></thead>
+<tbody>
+<tr><td>Ouvrir les DevTools</td><td><kbd>F12</kbd> <em>ou</em> <kbd>Ctrl</kbd>+<kbd>Maj</kbd>+<kbd>I</kbd></td><td><kbd>Cmd</kbd>+<kbd>Option</kbd>+<kbd>I</kbd></td></tr>
+<tr><td>Menu de commandes</td><td><kbd>Ctrl</kbd>+<kbd>Maj</kbd>+<kbd>P</kbd></td><td><kbd>Cmd</kbd>+<kbd>Maj</kbd>+<kbd>P</kbd></td></tr>
+<tr><td>Recharger en ignorant le cache</td><td><kbd>Ctrl</kbd>+<kbd>Maj</kbd>+<kbd>R</kbd></td><td><kbd>Cmd</kbd>+<kbd>Maj</kbd>+<kbd>R</kbd></td></tr>
+<tr><td>Fenêtre de navigation privée</td><td><kbd>Ctrl</kbd>+<kbd>Maj</kbd>+<kbd>N</kbd></td><td><kbd>Cmd</kbd>+<kbd>Maj</kbd>+<kbd>N</kbd></td></tr>
+</tbody></table></div>
+<p>Retenez surtout le <strong>menu de commandes</strong> : DevTools ouverts, faites <kbd>Ctrl</kbd>+<kbd>Maj</kbd>+<kbd>P</kbd> et tapez le nom de ce que vous cherchez (<code>Network</code>, <code>Performance</code>, <code>Lighthouse</code>, <code>Coverage</code>). C'est plus rapide que de chercher l'onglet, et ça marche même quand un panneau est caché derrière le menu <code>»</code>.</p>
+<p><strong>Travaillez en navigation privée.</strong> Vos extensions injectent du code dans les pages et faussent tout.</p>
+<h4>a. L'onglet Réseau — <em>qu'est-ce qui est téléchargé ?</em></h4>
+<p>Il liste chaque fichier demandé par la page : son poids, sa durée, son ordre d'arrivée. C'est l'outil qui répond à « pourquoi la page est-elle lourde ? ».</p>
+<ol><li>Onglet <strong>Réseau</strong>.</li><li>Cochez <strong>Désactiver le cache</strong> <em>(Disable cache)</em>. Sans ça, vous mesurez votre cache et pas le site.</li><li>Rechargez avec <kbd>Ctrl</kbd>+<kbd>Maj</kbd>+<kbd>R</kbd>.</li><li>Cliquez sur l'en-tête de colonne <strong>Taille</strong> pour trier par poids décroissant.</li><li>Lisez la <strong>barre de statut, tout en bas</strong> : elle affiche le nombre de requêtes et le poids total transféré.</li></ol>
+<p><strong>À rendre :</strong> une capture montrant le tableau trié <em>et</em> cette barre de total.</p>
+<h4>b. Lighthouse — <em>une note et des pistes</em></h4>
+<p>Lighthouse charge la page dans des conditions simulées (réseau et processeur ralentis), puis produit un score sur 100 et une liste de problèmes classés par gain estimé. C'est votre point d'entrée : il ne trouve pas tout, mais ce qu'il trouve est fiable.</p>
+<ol><li>Menu de commandes → <code>Lighthouse</code>.</li><li>Catégorie <strong>Performance</strong> uniquement.</li><li>Mode <strong>Navigation</strong>, puis <strong>Analyser</strong>.</li></ol>
+<p>Lancez-le <strong>deux fois : une fois en profil Mobile, une fois en Desktop.</strong> Les deux ne ralentissent pas la machine de la même façon et ne simulent pas le même écran. Vous n'obtiendrez pas les mêmes résultats, et l'écart lui-même est une information — ce n'est pas un bug, c'est une piste.</p>
+<p>Ne vous arrêtez pas au score : descendez jusqu'à <strong>Diagnostics</strong>, sous les opportunités. C'est la partie la plus utile du rapport.</p>
+<p><strong>À rendre :</strong> une capture par profil, en précisant lequel est lequel.</p>
+<h4>c. Le panneau Performances — <em>qu'est-ce qui bloque ?</em></h4>
+<p>Le Réseau dit ce qui est téléchargé ; Performances dit ce que le navigateur fait de son processeur. C'est le seul outil qui montre le code en train de s'exécuter, et donc le seul qui permette de désigner une fonction coupable.</p>
+<ol><li>Onglet <strong>Performances</strong>.</li><li>Réglez <strong>CPU</strong> sur <strong>ralentissement ×4</strong> (votre machine est bien plus rapide qu'un téléphone : sans ça, vous ne verrez rien).</li><li>Cliquez sur ⟳ (<strong>Démarrer le profilage et recharger la page</strong>), pas sur ●.</li><li><strong>Laissez tourner au moins 20 secondes</strong>, en faisant défiler la page pendant ce temps.</li><li>Arrêtez.</li></ol>
+<p>Vous obtenez une frise. Les <strong>blocs rouges</strong> sont les moments où la page était figée. Cliquez sur l'un d'eux : le panneau du bas vous donne la fonction responsable et son fichier.</p>
+<blockquote><p>⚠️ <strong>Les 20 secondes ne sont pas arbitraires, et le scroll non plus.</strong> Tout ne se déclenche pas au chargement : certains comportements n'existent qu'en réaction à ce que fait l'utilisateur, d'autres n'apparaissent qu'après un certain temps de présence sur la page. Un enregistrement de 3 secondes sans interaction vous montrera une page saine, et vous passerez à côté d'une partie du sujet.</p></blockquote>
+<p><strong>À rendre :</strong> une capture de la frise montrant les blocs rouges, et une capture de l'onglet <strong>Bottom-Up</strong> trié par temps.</p>
+<h4>Où mesurer</h4>
+<p>Les relevés de référence se font sur le <strong>site en ligne</strong>, pas sur votre copie locale : un serveur local ne compresse pas les fichiers, ce qui fausse tous les poids. La <a href="methodologie.html">méthodologie</a> détaille ce point, il est important.</p>
+<p>Pour le site déployé, vous pouvez aussi utiliser <strong>PageSpeed Insights</strong> (<a href="https://pagespeed.web.dev/">https://pagespeed.web.dev/</a>), qui fait tourner Lighthouse sur les serveurs de Google : pratique pour un résultat indépendant de votre machine.</p>
+<h4>Pour aller plus loin</h4>
+<ul><li>Documentation des DevTools : <a href="https://developer.chrome.com/docs/devtools/">https://developer.chrome.com/docs/devtools/</a></li><li>Liste des raccourcis : <a href="https://developer.chrome.com/docs/devtools/shortcuts">https://developer.chrome.com/docs/devtools/shortcuts</a></li></ul>
+<p>Le document <a href="methodologie.html">méthodologie</a> reprend chaque outil en détail, avec l'onglet Coverage, le protocole avant/après et les pièges de mesure.</p>
 <h3>2. Une liste de problèmes identifiés</h3>
 <p>Pour chaque problème trouvé, indiquez :</p>
 <p>L'exemple ci-dessous est <strong>fictif</strong> : il illustre le niveau de détail attendu, il ne décrit pas un problème de ce site.</p>

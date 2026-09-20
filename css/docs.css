@@ -46,7 +46,7 @@ body{
 .docs-body p{margin:0 0 14px}
 .docs-body ul,.docs-body ol{margin:0 0 16px;padding-left:22px}
 .docs-body li{margin-bottom:7px}
-.docs-body a{color:var(--primary)}
+.docs-body a{color:var(--primary);overflow-wrap:anywhere}
 .docs-body hr{border:0;border-top:1px solid var(--line);margin:36px 0}
 .docs-body strong{color:#fff}
 
