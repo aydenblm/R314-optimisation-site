@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Consignes — TP R3.14</title>
+<meta name="description" content="Un client vous confie un site vitrine existant. Il se plaint : « c&#x27;est lent,">
+<link rel="stylesheet" href="css/docs.css">
+</head>
+<body>
+<!-- Page générée par tools/build-docs.py à partir de docs/01-consignes.md.
+     Ne pas modifier directement : éditer le Markdown puis régénérer. -->
+<header class="docs-head">
+  <div class="docs-wrap">
+    <a class="docs-home" href="index.html">← SlowSite</a>
+    <nav class="docs-nav"><a href="consignes.html" class="on">Consignes</a><a href="methodologie.html">Méthodologie</a><a href="guide.html">Guide de résolution</a><a href="bareme.html">Barème</a></nav>
+  </div>
+</header>
+<main class="docs-wrap docs-body">
+<h1>01 — Consignes</h1>
+<h2>Contexte</h2>
+<p>Un client vous confie un site vitrine existant. Il se plaint : « c'est lent, et sur mon portable ça rame après quelques secondes ». Votre mission n'est pas de le refaire, mais de le <strong>rendre rapide sans rien changer à ce qu'il voit</strong>.</p>
+<h2>Ce que vous devez produire</h2>
+<h3>1. Un audit initial</h3>
+<p>Avant toute modification, relevez l'état des lieux :</p>
+<ul><li>capture de l'onglet <strong>Réseau</strong> (avec la ligne de total : requêtes + poids) ;</li><li>capture du rapport <strong>Lighthouse</strong> (mobile <em>et</em> desktop, les deux profils ne donnent pas les mêmes résultats — ce n'est pas un hasard) ;</li><li>un enregistrement <strong>Performance</strong> d'au moins <strong>20 secondes</strong> sur la page d'accueil, avec de l'interaction (scroll) pendant l'enregistrement.</li></ul>
+<blockquote><p>⚠️ Les 20 secondes ne sont pas arbitraires. Un enregistrement de 3 secondes vous fera rater une partie des problèmes.</p></blockquote>
+<h3>2. Une liste de problèmes identifiés</h3>
+<p>Pour chaque problème trouvé, indiquez :</p>
+<p>L'exemple ci-dessous est <strong>fictif</strong> : il illustre le niveau de détail attendu, il ne décrit pas un problème de ce site.</p>
+<div class="docs-table"><table>
+<thead><tr><th>Champ</th><th>Exemple (fictif)</th></tr></thead>
+<tbody>
+<tr><td>Fichier et ligne</td><td><code>assets/carousel.js:88</code></td></tr>
+<tr><td>Nature</td><td>La largeur du conteneur est relue à chaque image de l'animation</td></tr>
+<tr><td>Preuve</td><td>Capture du panneau Performance montrant les <em>Forced reflow</em></td></tr>
+<tr><td>Coût estimé</td><td>~40 ms par transition</td></tr>
+<tr><td>Correction proposée</td><td>Mesurer une fois au démarrage et mettre en cache</td></tr>
+</tbody></table></div>
+<p>Une affirmation sans mesure ne vaut rien. « J'ai enlevé ça, c'est sûrement mieux » n'est pas un audit.</p>
+<h3>3. Le site corrigé</h3>
+<p>Sur une branche Git à votre nom, ou dans un dépôt forké. Commits atomiques et messages explicites : un commit = une optimisation = un gain mesurable.</p>
+<h3>4. Un rapport avant/après</h3>
+<p>3 à 5 pages, avec un tableau comparatif chiffré sur les six indicateurs du README, et pour chaque optimisation majeure : le problème, la correction, le gain mesuré.</p>
+<h2>Contraintes</h2>
+<ol><li><strong>Iso-rendu.</strong> Le site doit être visuellement et fonctionnellement identique. Comparez avec des captures avant/après.</li><li><strong>Pas d'outil de build.</strong> Le site est hébergé sur GitHub Pages en statique. Pas de Webpack, pas de Vite, pas de npm. Tout doit rester servable tel quel. Vous pouvez en revanche utiliser des outils <em>hors ligne</em> pour préparer vos fichiers (compresser des images, minifier du CSS à la main ou via un service en ligne).</li><li><strong>Pas de CDN externe supplémentaire.</strong> L'idée est de réduire les dépendances, pas d'en ajouter.</li><li><strong>Hébergement statique.</strong> Vous n'avez pas la main sur les en-têtes HTTP (<code>Cache-Control</code>, compression, HTTP/2 push). Si une optimisation en dépendrait, <strong>mentionnez-la dans le rapport</strong> en expliquant ce que vous feriez avec un vrai serveur — c'est valorisé, même si vous ne pouvez pas l'appliquer ici.</li></ol>
+<h2>Déroulé conseillé</h2>
+<div class="docs-table"><table>
+<thead><tr><th>Étape</th><th>Durée</th><th>Contenu</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>30 min</td><td>Audit initial, relevés, captures</td></tr>
+<tr><td>2</td><td>30 min</td><td>Chasse aux problèmes réseau et images (gain le plus rapide)</td></tr>
+<tr><td>3</td><td>1 h</td><td>Chasse aux problèmes JavaScript</td></tr>
+<tr><td>4</td><td>30 min</td><td>CSS et rendu</td></tr>
+<tr><td>5</td><td>30 min</td><td>Re-mesure, comparaison, rapport</td></tr>
+</tbody></table></div>
+<p>L'ordre compte. Commencez par le poids des ressources : c'est là que se trouve le gain le plus spectaculaire pour le moins d'effort, et ça nettoie les mesures pour la suite.</p>
+<h2>Avertissement</h2>
+<p>Ce site contient plusieurs pièges de difficulté croissante. Certains sautent aux yeux, d'autres demandent de savoir lire un profil d'exécution, et au moins un ne se manifeste <strong>que dans certaines conditions</strong> (taille d'écran, durée de la visite). Si vos mesures vous semblent contradictoires d'un essai à l'autre, ce n'est probablement pas une erreur de votre part : c'est un indice.</p>
+</main>
+<footer class="docs-foot">
+  <div class="docs-wrap">R3.14 — BUT MMI Béziers</div>
+</footer>
+</body>
+</html>

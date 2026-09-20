@@ -1,0 +1,92 @@
+/* docs.css — feuille de style des pages de consignes.
+   Volontairement autonome : elle ne dépend pas de css/styles.css, pour que
+   les consignes restent lisibles et rapides pendant que le site principal
+   est en cours d'optimisation. Polices système, aucune ressource externe. */
+
+:root{
+  --bg:#0f1226; --fg:#E8ECF1; --muted:#93A1B1; --primary:#9C86FF;
+  --accent:#06D6A0; --card:#171B3D; --line:rgba(255,255,255,.12);
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+
+.docs-wrap{width:min(860px,100% - 32px);margin-inline:auto}
+
+.docs-head{
+  position:sticky; top:0; z-index:5;
+  background:rgba(15,18,38,.96); border-bottom:1px solid var(--line);
+}
+.docs-head .docs-wrap{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:16px; flex-wrap:wrap; padding:12px 0;
+}
+.docs-home{color:var(--fg);text-decoration:none;font-weight:600;white-space:nowrap}
+.docs-home:hover{color:var(--accent)}
+.docs-nav{display:flex;flex-wrap:wrap;gap:4px}
+.docs-nav a{
+  color:var(--muted); text-decoration:none; font-size:14px;
+  padding:6px 10px; border-radius:8px;
+}
+.docs-nav a:hover{color:var(--fg);background:rgba(255,255,255,.06)}
+.docs-nav a.on{color:var(--fg);background:rgba(124,92,255,.22)}
+
+.docs-body{padding:28px 0 64px}
+.docs-body h1{font-size:clamp(24px,3.4vw,34px);line-height:1.2;margin:0 0 24px}
+.docs-body h2{
+  font-size:clamp(19px,2.4vw,24px); margin:40px 0 12px;
+  padding-top:20px; border-top:1px solid var(--line);
+}
+.docs-body h3{font-size:17px;margin:28px 0 8px;color:var(--accent)}
+.docs-body h4{font-size:15px;margin:20px 0 6px;color:var(--muted)}
+.docs-body p{margin:0 0 14px}
+.docs-body ul,.docs-body ol{margin:0 0 16px;padding-left:22px}
+.docs-body li{margin-bottom:7px}
+.docs-body a{color:var(--primary)}
+.docs-body hr{border:0;border-top:1px solid var(--line);margin:36px 0}
+.docs-body strong{color:#fff}
+
+code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.88em; background:rgba(255,255,255,.08);
+  padding:.15em .4em; border-radius:5px; word-break:break-word;
+}
+pre{
+  background:#0b0e22; border:1px solid var(--line); border-radius:10px;
+  padding:14px 16px; overflow-x:auto; margin:0 0 18px;
+}
+pre code{background:none;padding:0;font-size:13px;line-height:1.55;word-break:normal}
+
+kbd{
+  font-family:inherit; font-size:.82em; background:rgba(255,255,255,.1);
+  border:1px solid var(--line); border-bottom-width:2px;
+  border-radius:5px; padding:.1em .45em; white-space:nowrap;
+}
+
+blockquote{
+  margin:0 0 18px; padding:12px 16px;
+  background:rgba(124,92,255,.12); border-left:3px solid var(--primary);
+  border-radius:0 8px 8px 0;
+}
+blockquote p:last-child{margin-bottom:0}
+
+.docs-table{overflow-x:auto;margin:0 0 20px}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:var(--card);font-weight:600;white-space:nowrap}
+tbody tr:hover{background:rgba(255,255,255,.03)}
+
+.docs-foot{
+  border-top:1px solid var(--line); padding:20px 0;
+  color:var(--muted); font-size:14px;
+}
+
+@media (max-width:560px){
+  body{font-size:15px}
+  .docs-head .docs-wrap{padding:10px 0}
+  th,td{padding:8px 10px}
+}

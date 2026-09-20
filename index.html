@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Site non optimisé...</title>
+
+    <link rel="icon" type="image/png" href="img/favicon.png" />
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+    <link rel="preload" as="font" type="font/woff2"
+          href="https://fonts.gstatic.com/s/poppins/v24/pxiByp8kv8JHgFVrLDz8Z1xlFQ.woff2" />
+    <link rel="preload" as="image" href="img/img6.jpg?v=2" />
+
+    <link rel="stylesheet" href="css/styles.css" />
+
+    <script src="js/legacy/polyfills.js"></script>
+    <script src="js/vendor/ui-kit.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/analytics.js" defer></script>
+
+    <!-- ===== Infrastructure du TP : hors exercice =====================
+         Le bouton « Consignes » et sa fenêtre ne font pas partie du site à
+         optimiser. Inutile de les analyser, les optimiser ou les supprimer.
+         Volontairement en ligne : aucune requête supplémentaire, et rien ne
+         casse quand vous réécrivez css/styles.css ou js/app.js.
+         ================================================================ -->
+    <style>
+      .tp-link{border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:5px 12px}
+      .tp-link:hover{background:rgba(255,255,255,.08)}
+      #tp-modal{width:min(1000px,94vw);height:min(86vh,900px);padding:0;border:0;
+        border-radius:14px;background:#0f1226;color:#E8ECF1;overflow:hidden}
+      #tp-modal::backdrop{background:rgba(4,6,18,.72)}
+      .tp-modal-bar{display:flex;align-items:center;justify-content:space-between;
+        gap:12px;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.12);
+        font:600 15px/1.3 system-ui,Segoe UI,Roboto,Arial,sans-serif}
+      .tp-modal-bar button{background:transparent;color:#E8ECF1;cursor:pointer;
+        border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:5px 11px;font:inherit}
+      .tp-modal-bar button:hover{background:rgba(255,255,255,.1)}
+      #tp-modal iframe{display:block;width:100%;height:calc(100% - 45px);border:0}
+    </style>
+  </head>
+  <body>
+    <div class="topbar">
+      <div class="container nav">
+        <div class="logo">Slow<span>Site</span></div>
+        <div class="menu">
+          <a href="#galerie">Galerie</a>
+          <a href="#defis">Défis</a>
+          <a href="#apropos">À propos</a>
+          <a class="tp-link js-consignes" href="consignes.html">Consignes du TP</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div class="container hero-inner">
+        <div class="hero-text">
+          <h1>Un site pour expérimenter la performance</h1>
+          <p>Testez, mesurez et proposez des améliorations.</p>
+          <a class="cta" href="#defis">Voir les défis</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="galerie" class="section gallery">
+      <div class="container">
+        <h2>Galerie</h2>
+        <div class="grid">
+          <div class="card">
+            <a href="img1.html"><img src="img/img1.jpg" alt="Image 1" /></a>
+          </div>
+          <div class="card">
+            <a href="img2.html"><img src="img/img2.jpg" alt="Image 2" /></a>
+          </div>
+          <div class="card">
+            <a href="img3.html"><img src="img/img3.jpg" alt="Image 3" /></a>
+          </div>
+          <div class="card">
+            <a href="img4.html"><img src="img/img4.jpg" alt="Image 4" /></a>
+          </div>
+          <div class="card">
+            <a href="img5.html"><img src="img/img5.jpg" alt="Image 5" /></a>
+          </div>
+          <div class="card">
+            <a href="img6.html"><img src="img/img6.jpg" alt="Image 6" /></a>
+          </div>
+        </div>
+        <div id="tagcloud" class="tagcloud"></div>
+      </div>
+    </div>
+
+    <div id="apropos" class="section features">
+      <div class="container">
+        <h2>Fonctionnalités</h2>
+        <div class="features-grid">
+          <div class="feature">
+            <div class="icon">⚡</div>
+            <h3>Design moderne</h3>
+            <p>Couleurs, ombres, grille responsive.</p>
+          </div>
+          <div class="feature">
+            <div class="icon">🧱</div>
+            <h3>Scripts</h3>
+            <p>Intégration de scripts pour effets visuels.</p>
+          </div>
+          <div class="feature">
+            <div class="icon">🖼️</div>
+            <h3>Images</h3>
+            <p>Galerie de visuels variés.</p>
+          </div>
+          <div class="feature">
+            <div class="icon">🔠</div>
+            <h3>Polices</h3>
+            <p>Typographie soignée.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="defis" class="section challenges">
+      <div class="container">
+        <h2>Défis</h2>
+        <ol>
+          <li>Analyser le comportement réseau et le rendu.</li>
+          <li>Identifier les ressources critiques.</li>
+          <li>Proposer des optimisations mesurables.</li>
+          <li>Comparer avant/après avec des outils de mesure.</li>
+          <li>Documenter la démarche.</li>
+        </ol>
+        <p>
+          Consignes détaillées, méthodologie de mesure, guide de résolution et
+          barème : <a class="js-consignes" href="consignes.html">ouvrir les
+          consignes du TP</a>. Widget de mesure intégré :
+          <a href="?perf=1">activer <code>?perf=1</code></a>.
+        </p>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="container">
+        <p>R3.14 Hébergement</p>
+        <p>© 2025 — BUT MMI Béziers - MAURIN N.</p>
+      </div>
+    </div>
+
+    <!-- ===== Infrastructure du TP : hors exercice ===================== -->
+    <dialog id="tp-modal" aria-labelledby="tp-modal-titre">
+      <div class="tp-modal-bar">
+        <span id="tp-modal-titre">Consignes du TP</span>
+        <span>
+          <a class="tp-link" href="consignes.html" target="_blank" rel="noopener">Ouvrir dans un onglet</a>
+          <button type="button" data-tp-close>Fermer</button>
+        </span>
+      </div>
+      <iframe title="Consignes du TP" data-src="consignes.html"></iframe>
+    </dialog>
+
+    <script>
+      /* Ouvre les consignes en fenêtre modale. Sans JavaScript, ou si
+         <dialog> n'est pas supporté, les liens naviguent normalement vers
+         consignes.html : le contenu reste accessible dans tous les cas.
+         L'iframe n'est chargée qu'à la première ouverture, pour ne rien
+         ajouter au chargement de la page mesurée. */
+      (function () {
+        var modal = document.getElementById('tp-modal');
+        var liens = document.querySelectorAll('.js-consignes');
+        if (!modal || !liens.length || typeof modal.showModal !== 'function') return;
+
+        var frame = modal.querySelector('iframe');
+        for (var i = 0; i < liens.length; i++) {
+          liens[i].addEventListener('click', function (e) {
+            e.preventDefault();
+            if (!frame.getAttribute('src')) {
+              frame.setAttribute('src', frame.dataset.src);
+            }
+            modal.showModal();
+          });
+        }
+        modal.querySelector('[data-tp-close]').addEventListener('click', function () {
+          modal.close();
+        });
+        // Échap ne remonte pas d'une iframe vers le <dialog> parent : on
+        // écoute donc aussi dans le document embarqué (même origine).
+        frame.addEventListener('load', function () {
+          try {
+            frame.contentDocument.addEventListener('keydown', function (e) {
+              if (e.key === 'Escape') modal.close();
+            });
+          } catch (err) { /* origine différente : la touche Échap n'agira pas */ }
+        });
+        // Clic sur le fond sombre : la cible est alors le <dialog> lui-même.
+        modal.addEventListener('click', function (e) {
+          if (e.target === modal) modal.close();
+        });
+      })();
+      /* ================================================================ */
+
+      if (new URLSearchParams(location.search).has('perf')) {
+        var s = document.createElement('script');
+        s.src = 'js/metrics.js';
+        s.defer = true;
+        document.head.appendChild(s);
+      }
+    </script>
+  </body>
+</html>
