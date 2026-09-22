@@ -23,7 +23,10 @@
 <h2>Ce que vous devez produire</h2>
 <h3>1. Un audit initial</h3>
 <p>Avant de modifier une seule ligne, vous devez savoir d'où vous partez. Sinon vous ne pourrez prouver aucun gain à la fin.</p>
-<p>Tout se fait dans les <strong>outils de développement du navigateur</strong> (« DevTools »), intégrés à Chrome et à Edge. Ce qui suit utilise leurs noms français ; en anglais, Réseau = <em>Network</em>, Performances = <em>Performance</em>.</p>
+<p>L'audit combine deux sources, et <strong>les deux sont obligatoires</strong> :</p>
+<ul><li>les <strong>outils de développement du navigateur</strong> (« DevTools », intégrés à Chrome et à Edge), qui montrent le détail de ce qui se passe sur votre machine ;</li><li><strong>PageSpeed Insights</strong>, qui mesure le site déployé depuis les serveurs de Google, dans des conditions identiques pour tout le monde.</li></ul>
+<p>Les deux ne disent pas la même chose, et c'est précisément l'intérêt de les croiser.</p>
+<p>Ce qui suit emploie les noms français des DevTools ; en anglais, Réseau = <em>Network</em>, Performances = <em>Performance</em>.</p>
 <h4>Ouvrir les outils</h4>
 <div class="docs-table"><table>
 <thead><tr><th>Action</th><th>Windows / Linux</th><th>macOS</th></tr></thead>
@@ -51,9 +54,42 @@
 <p>Vous obtenez une frise. Les <strong>blocs rouges</strong> sont les moments où la page était figée. Cliquez sur l'un d'eux : le panneau du bas vous donne la fonction responsable et son fichier.</p>
 <blockquote><p>⚠️ <strong>Les 20 secondes ne sont pas arbitraires, et le scroll non plus.</strong> Tout ne se déclenche pas au chargement : certains comportements n'existent qu'en réaction à ce que fait l'utilisateur, d'autres n'apparaissent qu'après un certain temps de présence sur la page. Un enregistrement de 3 secondes sans interaction vous montrera une page saine, et vous passerez à côté d'une partie du sujet.</p></blockquote>
 <p><strong>À rendre :</strong> une capture de la frise montrant les blocs rouges, et une capture de l'onglet <strong>Bottom-Up</strong> trié par temps.</p>
+<h4>d. PageSpeed Insights — <em>le même audit, mais pas sur votre machine</em></h4>
+<p><a href="https://pagespeed.web.dev/">https://pagespeed.web.dev/</a></p>
+<p>Lighthouse dans les DevTools tourne sur <strong>votre</strong> ordinateur : un portable récent et une machine de salle TP ne donneront pas le même score pour le même site. PageSpeed Insights exécute le même moteur sur <strong>les serveurs de Google</strong>, avec un matériel et un débit simulés toujours identiques. Deux conséquences :</p>
+<ul><li>vos relevés sont comparables avec ceux de vos camarades, et avec vos propres relevés d'il y a trois jours ;</li><li><strong>il lui faut une URL publique.</strong> <code>localhost</code> ne fonctionne pas. C'est donc l'outil du site déployé, jamais de votre copie locale.</li></ul>
+<p>Collez l'adresse du site, cliquez sur <strong>Analyser</strong>, patientez une vingtaine de secondes.</p>
+<h5>Visite guidée du rapport</h5>
+<blockquote><p>⚠️ Google réorganise cette interface régulièrement et les intitulés changent. Repérez les <strong>notions</strong> décrites ci-dessous plutôt que les mots exacts : elles, ne changent pas.</p></blockquote>
+<p><strong>1. Les onglets Mobile et Ordinateur, tout en haut.</strong> Deux simulations distinctes : le profil mobile applique un processeur et un réseau nettement plus lents. <strong>Les deux sont à relever.</strong> Un écart important entre les deux onglets n'est pas une anomalie de l'outil, c'est un renseignement sur votre site.</p>
+<p><strong>2. Les données de terrain (« utilisateurs réels », rapport CrUX).</strong> Mesures collectées sur de vrais visiteurs de Chrome, sur une fenêtre glissante de 28 jours, exprimées au 75ᵉ centile — c'est-à-dire l'expérience des 25 % les moins bien servis, pas la moyenne.</p>
+<p><strong>Sur notre site, cette section sera absente</strong>, et c'est normal : il faut un trafic réel suffisant pour que Google dispose de données. Ne cherchez pas à la faire apparaître. Notez simplement dans votre rapport que l'audit repose donc entièrement sur les données de laboratoire — c'est une limite méthodologique réelle, et la signaler vous fait gagner des points.</p>
+<p><strong>3. Les données de laboratoire (Lighthouse).</strong> C'est le cœur du rapport, et la seule partie exploitable ici. Un test unique, dans des conditions simulées et reproductibles.</p>
+<p><strong>4. Le score de performance, l'anneau coloré de 0 à 100.</strong> Rouge en dessous de 50, orange de 50 à 89, vert à partir de 90. Ce n'est pas une mesure mais une <strong>moyenne pondérée</strong> de cinq métriques :</p>
+<div class="docs-table"><table>
+<thead><tr><th>Métrique</th><th style="text-align:right">Poids</th><th>Ce qu'elle mesure</th></tr></thead>
+<tbody>
+<tr><td><strong>TBT</strong> — Total Blocking Time</td><td style="text-align:right">30 %</td><td>Temps où la page ne répond pas aux clics</td></tr>
+<tr><td><strong>LCP</strong> — Largest Contentful Paint</td><td style="text-align:right">25 %</td><td>Affichage du plus gros élément visible</td></tr>
+<tr><td><strong>CLS</strong> — Cumulative Layout Shift</td><td style="text-align:right">25 %</td><td>Sauts de mise en page pendant le chargement</td></tr>
+<tr><td><strong>FCP</strong> — First Contentful Paint</td><td style="text-align:right">10 %</td><td>Premier pixel de contenu affiché</td></tr>
+<tr><td><strong>Speed Index</strong></td><td style="text-align:right">10 %</td><td>Vitesse de remplissage visuel de l'écran</td></tr>
+</tbody></table></div>
+<p>Retenez-en une chose : <strong>TBT, LCP et CLS font 80 % du score.</strong> Une page légère mais bloquée par du JavaScript sera mal notée, et c'est justifié.</p>
+<p><em>(Ces pondérations sont celles des versions récentes de Lighthouse ; Google les a déjà fait évoluer et le fera encore. Vérifiez-les si l'écart avec votre score vous surprend.)</em></p>
+<p><strong>5. Les cinq métriques, affichées juste sous le score.</strong> Chacune avec sa valeur et sa pastille de couleur. <strong>C'est ici qu'il faut regarder, pas le score.</strong> Deux sites notés 45 peuvent avoir des problèmes totalement différents : l'un lourd, l'autre bloqué. Le score dit qu'il y a un problème, les métriques disent lequel.</p>
+<p><strong>6. La capture de la page, ou la pellicule de chargement.</strong> L'aspect de la page au fil du chargement. Très parlant pour comprendre le LCP et le CLS : vous <em>voyez</em> le moment où le contenu apparaît, et vous <em>voyez</em> les éléments sauter.</p>
+<p><strong>7. La liste des problèmes détectés</strong> (« Diagnostics », « Opportunités », ou « Insights » selon la version). La partie la plus utile. Chaque entrée est dépliable et indique souvent une <strong>économie estimée</strong> en secondes ou en kilo-octets.</p>
+<p>Deux réflexes :</p>
+<ul><li>Dépliez systématiquement. Le détail donne la liste exacte des fichiers en cause — c'est là que se trouve l'information, pas dans le titre.</li><li><strong>Traitez ces économies comme des estimations, pas comme des résultats.</strong> Elles sont calculées par un modèle. Votre rapport doit présenter des gains <em>mesurés</em> après correction, pas les prévisions de l'outil.</li></ul>
+<p><strong>8. Les audits réussis, repliés en bas de liste.</strong> Dépliez-les au moins une fois : ils vous disent ce qui va déjà bien, ce qui évite de « corriger » quelque chose de correct.</p>
+<p><strong>9. Les autres catégories</strong> (Accessibilité, Bonnes pratiques, SEO). Hors périmètre de ce TP, qui porte sur la performance. Rien ne vous interdit de les regarder, et d'en glisser un mot en conclusion.</p>
+<h5>Précautions</h5>
+<ul><li><strong>Le score varie d'un lancement à l'autre.</strong> Lancez l'analyse <strong>trois fois</strong> et gardez la valeur médiane. Un écart de quelques points entre deux essais ne signifie rien.</li><li><strong>Ne courez pas après le 100.</strong> L'objectif est de corriger des défauts réels et de le prouver, pas d'optimiser un chiffre.</li><li><strong>Relancez après chaque correction déployée.</strong> PSI mesure ce qui est en ligne : tant que vous n'avez pas publié, il analyse toujours l'ancienne version.</li></ul>
+<p><strong>À rendre :</strong> une capture par profil (mobile et ordinateur), montrant le score et les cinq métriques, avant et après vos corrections.</p>
 <h4>Où mesurer</h4>
 <p>Les relevés de référence se font sur le <strong>site en ligne</strong>, pas sur votre copie locale : un serveur local ne compresse pas les fichiers, ce qui fausse tous les poids. La <a href="methodologie.html">méthodologie</a> détaille ce point, il est important.</p>
-<p>Pour le site déployé, vous pouvez aussi utiliser <strong>PageSpeed Insights</strong> (<a href="https://pagespeed.web.dev/">https://pagespeed.web.dev/</a>), qui fait tourner Lighthouse sur les serveurs de Google : pratique pour un résultat indépendant de votre machine.</p>
+<p>C'est aussi la raison pour laquelle <strong>PageSpeed Insights</strong> (section d ci-dessus) fait partie des relevés obligatoires : il ne sait analyser qu'une URL publique, donc il mesure forcément le site dans ses conditions réelles.</p>
 <h4>Pour aller plus loin</h4>
 <ul><li>Documentation des DevTools : <a href="https://developer.chrome.com/docs/devtools/">https://developer.chrome.com/docs/devtools/</a></li><li>Liste des raccourcis : <a href="https://developer.chrome.com/docs/devtools/shortcuts">https://developer.chrome.com/docs/devtools/shortcuts</a></li></ul>
 <p>Le document <a href="methodologie.html">méthodologie</a> reprend chaque outil en détail, avec l'onglet Coverage, le protocole avant/après et les pièges de mesure.</p>

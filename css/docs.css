@@ -43,6 +43,9 @@ body{
 }
 .docs-body h3{font-size:17px;margin:28px 0 8px;color:var(--accent)}
 .docs-body h4{font-size:15px;margin:20px 0 6px;color:var(--muted)}
+.docs-body h5{font-size:14px;margin:22px 0 8px;color:var(--fg);
+  text-transform:uppercase;letter-spacing:.06em;opacity:.75}
+.docs-body h6{font-size:14px;margin:18px 0 6px;color:var(--muted)}
 .docs-body p{margin:0 0 14px}
 .docs-body ul,.docs-body ol{margin:0 0 16px;padding-left:22px}
 .docs-body li{margin-bottom:7px}
