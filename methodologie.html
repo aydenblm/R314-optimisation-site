@@ -42,7 +42,7 @@
 <h2>Outil 2 — Lighthouse</h2>
 <p>DevTools → <strong>Lighthouse</strong> → catégorie Performance.</p>
 <p>Précautions, sans lesquelles vos chiffres ne veulent rien dire :</p>
-<ul><li><strong>Fenêtre de navigation privée</strong>, pour neutraliser les extensions ;</li><li>lancez-le <strong>3 fois</strong> et gardez la médiane, les résultats varient ;</li><li>testez <strong>mobile ET desktop</strong>. Les deux profils n'appliquent ni la même taille d'écran ni la même limitation de CPU et de réseau. Un problème visible sur l'un peut être totalement absent de l'autre ;</li><li>n'ouvrez pas le widget <code>?perf=1</code> pendant un audit Lighthouse.</li></ul>
+<ul><li><strong>Fenêtre de navigation privée</strong>, pour neutraliser les extensions ;</li><li>lancez-le <strong>3 fois</strong> et gardez la médiane, les résultats varient — et parfois beaucoup. Sur ce site, trois lancements consécutifs en profil Ordinateur ont donné des scores de <strong>61, 37 et 36</strong>, uniquement à cause du TBT qui passait de 18 ms à plus de 600 ms d'un essai à l'autre. Un relevé unique vous aurait fait croire à un site deux fois meilleur qu'il n'est ;</li><li>testez <strong>mobile ET desktop</strong>. Les deux profils n'appliquent ni la même taille d'écran ni la même limitation de CPU et de réseau. Un problème visible sur l'un peut être totalement absent de l'autre ;</li><li>n'ouvrez pas le widget <code>?perf=1</code> pendant un audit Lighthouse.</li></ul>
 <p>Descendez systématiquement jusqu'à la section <strong>Diagnostics</strong>, sous les opportunités. C'est là que se trouvent les informations les plus utiles.</p>
 <h2>Outil 3 — Le panneau Performance</h2>
 <p>C'est l'outil qui distingue un étudiant qui a compris d'un étudiant qui a deviné.</p>
