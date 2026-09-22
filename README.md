@@ -20,6 +20,9 @@ Accès direct :
 - [Guide de résolution](https://nico3807.github.io/R314-optimisation-site/guide.html)
 - [Barème](https://nico3807.github.io/R314-optimisation-site/bareme.html)
 
+Mesure de référence, pré-remplie :
+[analyser le site avec PageSpeed Insights](https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fnico3807.github.io%2FR314-optimisation-site%2F)
+
 ## Pour travailler dessus
 
 Forkez ce dépôt, puis servez-le en HTTP — un `file://` fausse les mesures

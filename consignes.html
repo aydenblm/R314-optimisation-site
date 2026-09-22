@@ -55,10 +55,13 @@
 <blockquote><p>⚠️ <strong>Les 20 secondes ne sont pas arbitraires, et le scroll non plus.</strong> Tout ne se déclenche pas au chargement : certains comportements n'existent qu'en réaction à ce que fait l'utilisateur, d'autres n'apparaissent qu'après un certain temps de présence sur la page. Un enregistrement de 3 secondes sans interaction vous montrera une page saine, et vous passerez à côté d'une partie du sujet.</p></blockquote>
 <p><strong>À rendre :</strong> une capture de la frise montrant les blocs rouges, et une capture de l'onglet <strong>Bottom-Up</strong> trié par temps.</p>
 <h4>d. PageSpeed Insights — <em>le même audit, mais pas sur votre machine</em></h4>
-<p><a href="https://pagespeed.web.dev/">https://pagespeed.web.dev/</a></p>
+<p>👉 <a href="https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fnico3807.github.io%2FR314-optimisation-site%2F" target="_blank" rel="noopener"><strong>Analyser le site de référence</strong></a> — le lien est pré-rempli, il n'y a qu'à lancer.</p>
 <p>Lighthouse dans les DevTools tourne sur <strong>votre</strong> ordinateur : un portable récent et une machine de salle TP ne donneront pas le même score pour le même site. PageSpeed Insights exécute le même moteur sur <strong>les serveurs de Google</strong>, avec un matériel et un débit simulés toujours identiques. Deux conséquences :</p>
 <ul><li>vos relevés sont comparables avec ceux de vos camarades, et avec vos propres relevés d'il y a trois jours ;</li><li><strong>il lui faut une URL publique.</strong> <code>localhost</code> ne fonctionne pas. C'est donc l'outil du site déployé, jamais de votre copie locale.</li></ul>
-<p>Collez l'adresse du site, cliquez sur <strong>Analyser</strong>, patientez une vingtaine de secondes.</p>
+<p>Le lien ci-dessus ouvre directement l'analyse du site de référence. Pour analyser <strong>votre</strong> version, une fois vos corrections déployées, remplacez simplement l'adresse dans le champ en haut de la page PageSpeed Insights, ou utilisez l'adresse de votre propre publication :</p>
+<pre><code>https://pagespeed.web.dev/analysis?url=VOTRE_URL</code></pre>
+<p>Dans les deux cas, comptez une vingtaine de secondes d'analyse.</p>
+<blockquote><p>⚠️ Pour vos mesures « après », analysez bien <strong>votre</strong> site et non celui de référence. C'est l'erreur classique : on relance le lien pré-rempli, on retrouve les mêmes mauvais chiffres, et on croit que les corrections n'ont servi à rien.</p></blockquote>
 <h5>Visite guidée du rapport</h5>
 <blockquote><p>⚠️ Google réorganise cette interface régulièrement et les intitulés changent. Repérez les <strong>notions</strong> décrites ci-dessous plutôt que les mots exacts : elles, ne changent pas.</p></blockquote>
 <p><strong>1. Les onglets Mobile et Ordinateur, tout en haut.</strong> Deux simulations distinctes : le profil mobile applique un processeur et un réseau nettement plus lents. <strong>Les deux sont à relever.</strong> Un écart important entre les deux onglets n'est pas une anomalie de l'outil, c'est un renseignement sur votre site.</p>
@@ -91,7 +94,7 @@
 <p>Les relevés de référence se font sur le <strong>site en ligne</strong>, pas sur votre copie locale : un serveur local ne compresse pas les fichiers, ce qui fausse tous les poids. La <a href="methodologie.html">méthodologie</a> détaille ce point, il est important.</p>
 <p>C'est aussi la raison pour laquelle <strong>PageSpeed Insights</strong> (section d ci-dessus) fait partie des relevés obligatoires : il ne sait analyser qu'une URL publique, donc il mesure forcément le site dans ses conditions réelles.</p>
 <h4>Pour aller plus loin</h4>
-<ul><li>Documentation des DevTools : <a href="https://developer.chrome.com/docs/devtools/">https://developer.chrome.com/docs/devtools/</a></li><li>Liste des raccourcis : <a href="https://developer.chrome.com/docs/devtools/shortcuts">https://developer.chrome.com/docs/devtools/shortcuts</a></li></ul>
+<ul><li>Documentation des DevTools : <a href="https://developer.chrome.com/docs/devtools/" target="_blank" rel="noopener">https://developer.chrome.com/docs/devtools/</a></li><li>Liste des raccourcis : <a href="https://developer.chrome.com/docs/devtools/shortcuts" target="_blank" rel="noopener">https://developer.chrome.com/docs/devtools/shortcuts</a></li></ul>
 <p>Le document <a href="methodologie.html">méthodologie</a> reprend chaque outil en détail, avec l'onglet Coverage, le protocole avant/après et les pièges de mesure.</p>
 <h3>2. Une liste de problèmes identifiés</h3>
 <p>Pour chaque problème trouvé, indiquez :</p>
