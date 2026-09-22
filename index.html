@@ -27,6 +27,11 @@
     <style>
       .tp-link{border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:5px 12px}
       .tp-link:hover{background:rgba(255,255,255,.08)}
+      /* Cette entrée de menu supplémentaire fait déborder la barre sur petit
+         écran : on autorise le retour à la ligne. */
+      @media (max-width:640px){
+        .menu{flex-wrap:wrap;justify-content:flex-end;gap:8px 14px}
+      }
       #tp-modal{width:min(1000px,94vw);height:min(86vh,900px);padding:0;border:0;
         border-radius:14px;background:#0f1226;color:#E8ECF1;overflow:hidden}
       #tp-modal::backdrop{background:rgba(4,6,18,.72)}
@@ -85,6 +90,8 @@
             <a href="img6.html"><img src="img/img6.jpg" alt="Image 6" /></a>
           </div>
         </div>
+        <h3 class="tagcloud-title">Mots-clés de la photothèque</h3>
+        <p class="tagcloud-intro">Indexation de l'ensemble du fonds, toutes séries confondues.</p>
         <div id="tagcloud" class="tagcloud"></div>
       </div>
     </div>

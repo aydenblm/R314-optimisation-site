@@ -1234,3 +1234,5 @@ a{color:var(--fg);text-decoration:none;opacity:.9}a:hover{opacity:1}
 .tag:nth-child(5n){color:var(--primary)}
 .card{transform:translateY(24px);transition:transform .35s ease}
 .card.visible{transform:translateY(0)}
+.tagcloud-title{margin:34px 0 4px;font-size:18px}
+.tagcloud-intro{margin:0;color:var(--muted);font-size:14px}
