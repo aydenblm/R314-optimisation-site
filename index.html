@@ -71,28 +71,32 @@
       <div class="container">
         <h2>Galerie</h2>
         <div class="grid">
-          <div class="card">
+          <div class="card" data-mots="paysage montagne aube brume grand angle">
             <a href="img1.html"><img src="img/img1.jpg" alt="Image 1" /></a>
           </div>
-          <div class="card">
+          <div class="card" data-mots="architecture ville façade contraste élevé">
             <a href="img2.html"><img src="img/img2.jpg" alt="Image 2" /></a>
           </div>
-          <div class="card">
+          <div class="card" data-mots="portrait studio clair-obscur noir profond">
             <a href="img3.html"><img src="img/img3.jpg" alt="Image 3" /></a>
           </div>
-          <div class="card">
+          <div class="card" data-mots="littoral falaise heure dorée pose longue">
             <a href="img4.html"><img src="img/img4.jpg" alt="Image 4" /></a>
           </div>
-          <div class="card">
+          <div class="card" data-mots="photo de rue ruelle silhouette monochrome">
             <a href="img5.html"><img src="img/img5.jpg" alt="Image 5" /></a>
           </div>
-          <div class="card">
+          <div class="card" data-mots="forêt sentier lumière rasante macro">
             <a href="img6.html"><img src="img/img6.jpg" alt="Image 6" /></a>
           </div>
         </div>
-        <h3 class="tagcloud-title">Mots-clés de la photothèque</h3>
-        <p class="tagcloud-intro">Indexation de l'ensemble du fonds, toutes séries confondues.</p>
-        <div id="tagcloud" class="tagcloud"></div>
+        <div class="gallery-filter">
+          <label for="q">Filtrer par mot-clé</label>
+          <input id="q" type="search" list="motscles" autocomplete="off"
+                 placeholder="paysage, argentique, heure dorée…" />
+          <datalist id="motscles"></datalist>
+          <p id="filter-info" class="filter-info"></p>
+        </div>
       </div>
     </div>
 

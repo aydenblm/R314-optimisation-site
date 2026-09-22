@@ -1227,12 +1227,12 @@ a{color:var(--fg);text-decoration:none;opacity:.9}a:hover{opacity:1}
 @media (max-width:900px){.features-grid{grid-template-columns:repeat(2,1fr)}.gallery .grid{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:560px){.features-grid{grid-template-columns:1fr}.gallery .grid{grid-template-columns:1fr}}
 
-/* --- Nuage de mots-clés de la galerie --- */
-.tagcloud{display:flex;flex-wrap:wrap;gap:6px 10px;margin-top:28px;line-height:1.9}
-.tag{color:var(--muted);white-space:nowrap;transition:opacity .2s linear}
-.tag:nth-child(3n){color:var(--accent)}
-.tag:nth-child(5n){color:var(--primary)}
+/* --- Filtrage de la galerie --- */
+.gallery-filter{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:26px}
+.gallery-filter label{color:var(--muted);font-size:14px}
+.gallery-filter input{background:var(--card);color:var(--fg);border:1px solid rgba(255,255,255,.14);
+  border-radius:10px;padding:9px 12px;min-width:min(320px,100%);font:inherit;font-size:14px}
+.gallery-filter input:focus{outline:2px solid var(--primary);outline-offset:1px}
+.filter-info{margin:0;color:var(--muted);font-size:13px}
 .card{transform:translateY(24px);transition:transform .35s ease}
 .card.visible{transform:translateY(0)}
-.tagcloud-title{margin:34px 0 4px;font-size:18px}
-.tagcloud-intro{margin:0;color:var(--muted);font-size:14px}

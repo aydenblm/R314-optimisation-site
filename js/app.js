@@ -69,18 +69,46 @@
     'fonds photographique', 'inventaire', 'numérisation', 'conservation'
   ];
 
-  /* Construit le nuage de mots-clés sous la galerie. La taille de chaque
-     étiquette reflète sa fréquence d'emploi dans le fonds. */
-  function buildTagCloud() {
-    var host = UIKit.qs('#tagcloud');
-    if (!host) return;
+  /* Alimente les suggestions du champ de filtrage avec le vocabulaire
+     d'indexation de la photothèque. */
+  function buildKeywordIndex() {
+    var list = UIKit.qs('#motscles');
+    if (!list) return;
 
-    host.innerHTML = '';
+    list.innerHTML = '';
     for (var i = 0; i < TAGS.length; i++) {
-      var weight = 80 + ((i * 7) % 60);
-      // On ajoute chaque étiquette au fur et à mesure pour garder l'ordre.
-      host.innerHTML += '<span class="tag" style="font-size:' + (weight / 100) +
-                        'rem">' + TAGS[i] + '</span>';
+      // On ajoute chaque entrée au fur et à mesure pour garder l'ordre.
+      list.innerHTML += '<option value="' + TAGS[i] + '"></option>';
+    }
+  }
+
+  /* Filtre la galerie sur les mots-clés associés à chaque visuel. */
+  function filterGallery() {
+    var champ = UIKit.qs('#q');
+    var info = UIKit.qs('#filter-info');
+    if (!champ) return;
+
+    var q = champ.value.trim().toLowerCase();
+    var cards = UIKit.qsa('.card');
+    var visibles = 0;
+
+    for (var i = 0; i < cards.length; i++) {
+      var mots = (cards[i].getAttribute('data-mots') || '').toLowerCase();
+      var match = !q || mots.indexOf(q) !== -1;
+      cards[i].style.display = match ? '' : 'none';
+      if (match) visibles++;
+    }
+
+    if (info) {
+      if (!q) {
+        info.textContent = '';
+      } else if (!visibles) {
+        // Le vocabulaire couvre tout le fonds, pas seulement cette sélection.
+        info.textContent = 'Aucun visuel de la sélection pour « ' + champ.value.trim() + ' »';
+      } else {
+        info.textContent = visibles + ' visuel' + (visibles > 1 ? 's' : '') +
+                           ' sur ' + cards.length;
+      }
     }
   }
 
@@ -108,14 +136,6 @@
         cards[i].style.transform = 'translateY(24px)';
       }
     }
-
-    // Dégradé d'opacité sur le nuage de mots-clés selon la position.
-    var tags = UIKit.qsa('.tag');
-    for (var k = 0; k < tags.length; k++) {
-      var box = tags[k].getBoundingClientRect();
-      var d = Math.abs(box.top - window.innerHeight / 2);
-      tags[k].style.opacity = Math.max(0.25, 1 - d / window.innerHeight);
-    }
   }
 
   /* Affiche les images une fois chargées. */
@@ -132,9 +152,11 @@
   }
 
   UIKit.ready(function () {
-    buildTagCloud();
+    buildKeywordIndex();
     watchImages();
     revealCards();
+    var champ = UIKit.qs('#q');
+    if (champ) champ.addEventListener('input', filterGallery);
   });
 
   window.addEventListener('scroll', revealCards);
