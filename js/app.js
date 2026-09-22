@@ -82,6 +82,48 @@
     }
   }
 
+  /* Construit le calendrier d'activité : 53 semaines de 7 jours, la teinte de
+     chaque case reflétant le nombre de prises de vue archivées ce jour-là. */
+  function buildActivityCalendar() {
+    var host = UIKit.qs('#calendrier');
+    if (!host) return;
+
+    var MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet',
+                'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+    var fin = new Date(Date.UTC(2026, 8, 30));
+    var frag = document.createDocumentFragment();
+
+    for (var i = 370; i >= 0; i--) {
+      var jour = new Date(fin.getTime() - i * 86400000);
+      var n = activite(jour);
+      var cell = document.createElement('div');
+      cell.className = 'cal-day';
+      cell.setAttribute('data-n', String(n));
+      cell.title = n === 0
+        ? 'Aucune prise de vue le ' + jour.getUTCDate() + ' ' + MOIS[jour.getUTCMonth()]
+        : n + ' prise' + (n > 1 ? 's' : '') + ' de vue le ' + jour.getUTCDate() +
+          ' ' + MOIS[jour.getUTCMonth()];
+      frag.appendChild(cell);
+    }
+    host.appendChild(frag);
+  }
+
+  /* Niveau d'activité d'une journée, de 0 à 4. Les sorties sont plus
+     nombreuses le week-end et à la belle saison. */
+  function activite(jour) {
+    var j = jour.getUTCDay();
+    var mois = jour.getUTCMonth();
+    var graine = (jour.getUTCFullYear() * 372 + mois * 31 + jour.getUTCDate()) * 2654435761;
+    var bruit = ((graine >>> 13) % 100) / 100;
+    var poids = (j === 0 || j === 6 ? 0.45 : 0.12) +
+                (mois >= 4 && mois <= 8 ? 0.28 : 0.05) + bruit * 0.45;
+    if (poids < 0.35) return 0;
+    if (poids < 0.6) return 1;
+    if (poids < 0.8) return 2;
+    if (poids < 0.95) return 3;
+    return 4;
+  }
+
   /* Filtre la galerie sur les mots-clés associés à chaque visuel. */
   function filterGallery() {
     var champ = UIKit.qs('#q');
@@ -136,6 +178,14 @@
         cards[i].style.transform = 'translateY(24px)';
       }
     }
+
+    // Les cases du calendrier apparaissent progressivement à l'approche.
+    var jours = UIKit.qsa('.cal-day');
+    for (var k = 0; k < jours.length; k++) {
+      var box = jours[k].getBoundingClientRect();
+      var d = Math.abs(box.top - window.innerHeight / 2);
+      jours[k].style.opacity = Math.max(0.15, 1 - d / window.innerHeight);
+    }
   }
 
   /* Affiche les images une fois chargées. */
@@ -153,6 +203,7 @@
 
   UIKit.ready(function () {
     buildKeywordIndex();
+    buildActivityCalendar();
     watchImages();
     revealCards();
     var champ = UIKit.qs('#q');
