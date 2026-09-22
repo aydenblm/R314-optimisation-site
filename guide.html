@@ -22,13 +22,21 @@
 <hr>
 <h2>A. Images</h2>
 <p>Les images représentent presque toujours l'essentiel du poids d'une page. C'est le premier chantier.</p>
-<h3>A1. Dimensions réelles vs dimensions d'affichage</h3>
+<h3>A1. Contraindre la largeur d'affichage</h3>
+<p>C'est la première chose à vérifier, et elle ne demande aucun outil : <strong>la page défile-t-elle horizontalement ?</strong> Si oui, quelque chose dépasse.</p>
+<p>Une image sans contrainte CSS s'affiche à sa largeur native. Un fichier de 4000 px de large produit une page de 4000 px, quel que soit l'écran. Sur un téléphone, le visiteur voit un coin de l'image et doit faire glisser la page latéralement pour lire le reste.</p>
+<p><strong>Comment vérifier :</strong> réduisez la fenêtre, ou activez le mode appareil mobile des DevTools (<kbd>Ctrl</kbd>+<kbd>Maj</kbd>+<kbd>M</kbd>). Une barre de défilement horizontale est toujours un défaut.</p>
+<p><strong>Correction :</strong></p>
+<pre><code class="lang-css">.mon-conteneur img{display:block;width:100%;height:auto}</code></pre>
+<p><code>width:100%</code> borne l'image à la largeur de son conteneur, <code>height:auto</code> préserve ses proportions. Si vous voulez qu'une petite image ne soit pas étirée au-delà de sa taille réelle, utilisez <code>max-width:100%</code> à la place.</p>
+<p>Attention : cela corrige l'<strong>affichage</strong>, pas le <strong>poids</strong>. Une image de 4000 px ramenée à 800 px à l'écran pèse toujours 4000 px dans le réseau. Les deux problèmes sont distincts et se corrigent séparément — voir le point suivant.</p>
+<h3>A2. Dimensions réelles vs dimensions d'affichage</h3>
 <p>Une image affichée dans une grille de 380 px de large n'a aucune raison d'être stockée en 4000 px. Sur un écran classique, 380 px d'affichage justifient 760 px de source (densité ×2), pas davantage.</p>
 <p><strong>Comment vérifier :</strong> dans l'onglet Réseau, survolez une image. L'infobulle affiche <code>Dimensions intrinsèques</code> et <code>Taille rendue</code>. Un rapport de 5 ou 10 entre les deux est une erreur.</p>
 <p><strong>Correction :</strong> redimensionnez la source. Un outil hors ligne (GIMP, Squoosh.app, ImageMagick) suffit.</p>
 <pre><code class="lang-bash"># exemple avec ImageMagick
 magick img1.jpg -resize 800x -quality 78 img1-800.jpg</code></pre>
-<h3>A2. Format</h3>
+<h3>A3. Format</h3>
 <p>Le JPEG a plus de vingt-cinq ans. À qualité visuelle égale :</p>
 <div class="docs-table"><table>
 <thead><tr><th>Format</th><th>Gain typique vs JPEG</th><th>Support</th></tr></thead>
@@ -43,25 +51,25 @@ magick img1.jpg -resize 800x -quality 78 img1-800.jpg</code></pre>
   &lt;img src="img/img1.jpg" alt="Image 1" width="760" height="507"&gt;
 &lt;/picture&gt;</code></pre>
 <p>Pour un logo, une icône ou un pictogramme : <strong>SVG</strong>, qui pèse quelques centaines d'octets et reste net à toute taille. Un bitmap là où un SVG conviendrait, c'est du poids payé pour rien — et la question se pose pour toutes les icônes d'une page, favicon compris.</p>
-<h3>A3. Images servies plusieurs fois</h3>
+<h3>A4. Images servies plusieurs fois</h3>
 <p>Le navigateur identifie une ressource par son <strong>URL complète</strong>, query string comprise. <code>img/photo.jpg</code> et <code>img/photo.jpg?v=2</code> sont deux ressources différentes : elles sont téléchargées deux fois, mises en cache deux fois.</p>
 <p><strong>Comment vérifier :</strong> dans l'onglet Réseau, filtrez sur le nom du fichier. Si deux lignes apparaissent, vous payez deux fois.</p>
-<h3>A4. Images téléchargées sans jamais être vues</h3>
+<h3>A5. Images téléchargées sans jamais être vues</h3>
 <p>Une image de fond CSS est téléchargée dès que la règle s'applique à un élément présent dans le DOM — <strong>même si elle est invisible</strong>. Une opacité très faible, un élément recouvert, un <code>visibility:hidden</code> : le téléchargement a lieu quand même. (Seul <code>display:none</code> sur l'élément porteur l'évite, et c'est un comportement à ne pas prendre pour acquis.)</p>
 <p><strong>Comment vérifier :</strong> listez les images de l'onglet Réseau, et pointez pour chacune l'endroit exact où elle apparaît à l'écran. Celle que vous n'arrivez pas à situer est votre problème.</p>
 <p><strong>Correction :</strong> si l'effet visuel est négligeable, supprimez la règle — mais vérifiez d'abord qu'il est bien négligeable (la contrainte d'iso-rendu s'applique). Si l'effet est voulu, une image de quelques dizaines de kilo-octets suffit largement pour une texture : une texture n'a pas besoin d'être nette.</p>
-<h3>A5. <code>width</code> / <code>height</code> et le CLS</h3>
+<h3>A6. <code>width</code> / <code>height</code> et le CLS</h3>
 <p>Sans dimensions déclarées, le navigateur réserve une hauteur de zéro, puis pousse tout le contenu vers le bas quand l'image arrive. C'est du CLS, et c'est la chose la plus désagréable qui puisse arriver à un lecteur.</p>
 <pre><code class="lang-html">&lt;img src="img/img1.jpg" alt="Image 1" width="760" height="507"&gt;</code></pre>
 <p>Les attributs donnent le <strong>ratio</strong>, pas la taille d'affichage : votre CSS (<code>width:100%; height:auto</code>) continue de commander. Il n'y a aucune raison de s'en priver.</p>
-<h3>A6. Chargement différé</h3>
+<h3>A7. Chargement différé</h3>
 <pre><code class="lang-html">&lt;!-- images sous la ligne de flottaison --&gt;
 &lt;img src="…" loading="lazy" decoding="async" width="760" height="507"&gt;
 
 &lt;!-- l'image LCP, au contraire : jamais lazy, et prioritaire --&gt;
 &lt;img src="…" fetchpriority="high" width="760" height="507"&gt;</code></pre>
 <p>Attention : mettre <code>loading="lazy"</code> sur l'image principale <strong>dégrade</strong> le LCP. La règle est : tout ce qui est visible d'emblée reste en chargement immédiat.</p>
-<h3>A7. <code>srcset</code></h3>
+<h3>A8. <code>srcset</code></h3>
 <p>Pour servir une image adaptée à chaque écran :</p>
 <pre><code class="lang-html">&lt;img src="img/img1-760.jpg"
      srcset="img/img1-380.jpg 380w, img/img1-760.jpg 760w, img/img1-1200.jpg 1200w"
