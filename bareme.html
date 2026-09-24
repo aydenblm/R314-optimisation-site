@@ -26,7 +26,7 @@
 <tr><td>Identification des problèmes</td><td style="text-align:right">6</td><td>Voir la grille par niveaux ci-dessous</td></tr>
 <tr><td>Corrections appliquées</td><td style="text-align:right">6</td><td>Le site est effectivement plus rapide, et toujours iso-rendu</td></tr>
 <tr><td>Rapport avant/après</td><td style="text-align:right">4</td><td>Tableau chiffré, une preuve par affirmation</td></tr>
-<tr><td>Qualité du dépôt</td><td style="text-align:right">1</td><td>Commits atomiques, messages clairs</td></tr>
+<tr><td>Qualité du rendu</td><td style="text-align:right">1</td><td>Archive propre et complète, code lisible</td></tr>
 <tr><td><strong>Total</strong></td><td style="text-align:right"><strong>20</strong></td><td></td></tr>
 </tbody></table></div>
 <p><strong>Malus :</strong> −2 points par fonctionnalité ou élément visuel supprimé au lieu d'être optimisé. La contrainte d'iso-rendu n'est pas négociable : un site vide a d'excellentes métriques.</p>
@@ -47,9 +47,11 @@
 <h2>Ce qui rapporte des points</h2>
 <ul><li>Une mesure avant, une mesure après, dans les mêmes conditions.</li><li>Une capture d'écran qui prouve ce que vous affirmez.</li><li>Le bon vocabulaire : <em>chaîne critique</em>, <em>reflow forcé</em>, <em>long task</em>, <em>LCP</em>.</li><li>Reconnaître qu'une optimisation n'a rien changé. C'est un résultat.</li><li>Repérer une optimisation impossible ici (en-têtes HTTP, build) et expliquer ce que vous feriez ailleurs.</li><li>Une correction qui traite la cause plutôt que le symptôme.</li></ul>
 <h2>Ce qui en coûte</h2>
-<ul><li>« J'ai optimisé les images » sans chiffre.</li><li>Une capture Lighthouse sans indication du profil (mobile ? desktop ?).</li><li>Supprimer du contenu ou une fonctionnalité pour gagner des points.</li><li>Recopier le guide de résolution sans l'appliquer au cas présent.</li><li>Un seul commit « optimisations ».</li><li>Mesurer en <code>file://</code>, ou avec le cache actif.</li></ul>
+<ul><li>« J'ai optimisé les images » sans chiffre.</li><li>Une capture Lighthouse sans indication du profil (mobile ? desktop ?).</li><li>Supprimer du contenu ou une fonctionnalité pour gagner des points.</li><li>Recopier le guide de résolution sans l'appliquer au cas présent.</li><li>Une archive qui traîne des <code>node_modules</code>, un <code>.git</code> ou des fichiers de travail.</li><li>Mesurer en <code>file://</code>, ou avec le cache actif.</li></ul>
 <h2>Rendu</h2>
-<ul><li>Dépôt Git (fork ou branche) contenant le site corrigé.</li><li><code>RAPPORT.md</code> ou PDF à la racine.</li><li>Les captures dans un dossier <code>audit/</code>.</li></ul>
+<p>Une archive <strong><code>nom-prenom.zip</code></strong> déposée sur Moodle, contenant :</p>
+<ul><li>le site corrigé, complet et fonctionnel ;</li><li>votre rapport avant/après, en Markdown ou en PDF, à la racine ;</li><li>les captures d'écran dans un dossier <code>audit/</code>.</li></ul>
+<p>Le rapport doit indiquer l'<strong>adresse de votre site déployé</strong> : PageSpeed Insights n'analysant que des URL publiques, c'est elle qui permet de vérifier vos relevés « après ».</p>
 </main>
 <footer class="docs-foot">
   <div class="docs-wrap">R3.14 — BUT MMI Béziers</div>
