@@ -20,6 +20,19 @@
 <h1>01 — Consignes</h1>
 <h2>Contexte</h2>
 <p>Un client vous confie un site vitrine existant. Il se plaint : « c'est lent, et sur mon portable ça rame après quelques secondes ». Votre mission n'est pas de le refaire, mais de le <strong>rendre rapide sans rien changer à ce qu'il voit</strong>.</p>
+<h2>Pour commencer : récupérer le site</h2>
+<p>Le site à optimiser est ici :</p>
+<p><a href="https://github.com/nico3807/R314-optimisation-site" target="_blank" rel="noopener">https://github.com/nico3807/R314-optimisation-site</a></p>
+<p><strong>Ne le clonez pas directement.</strong> Vous n'auriez pas le droit d'y pousser vos modifications, et vous ne pourriez pas le publier pour vos mesures. Passez par un <em>fork</em>, c'est-à-dire votre copie personnelle du dépôt :</p>
+<p><strong>1. Créez votre fork.</strong> Sur la page ci-dessus, bouton <strong>Fork</strong> en haut à droite, puis <strong>Create fork</strong>. Vous obtenez <code>https://github.com/VOTRE-COMPTE/R314-optimisation-site</code>.</p>
+<p><strong>2. Clonez votre fork</strong> — pas l'original :</p>
+<pre><code class="lang-bash">git clone https://github.com/VOTRE-COMPTE/R314-optimisation-site.git
+cd R314-optimisation-site</code></pre>
+<p><strong>3. Publiez-le.</strong> Dans votre fork sur GitHub : <strong>Settings → Pages → Source : Deploy from a branch → <code>main</code> / <code>(root)</code> → Save</strong>. Une ou deux minutes plus tard, votre site est en ligne à l'adresse <code>https://VOTRE-COMPTE.github.io/R314-optimisation-site/</code>. Vous en aurez besoin pour les relevés PageSpeed Insights, qui n'analysent que des URL publiques.</p>
+<p><strong>4. Servez-le en local pour travailler.</strong> Ouvrir les fichiers en <code>file://</code> fausse toutes les mesures réseau :</p>
+<pre><code class="lang-bash">python3 -m http.server 8000
+# puis http://localhost:8000</code></pre>
+<p>Travaillez ensuite normalement : modifiez, <code>git commit</code>, <code>git push</code>. Chaque poussée met votre site publié à jour, ce qui vous permet de remesurer.</p>
 <h2>Ce que vous devez produire</h2>
 <h3>1. Un audit initial</h3>
 <p>Avant de modifier une seule ligne, vous devez savoir d'où vous partez. Sinon vous ne pourrez prouver aucun gain à la fin.</p>
@@ -113,8 +126,8 @@
 <p>Un <strong>dépôt sera ouvert sur Moodle</strong> pour y déposer votre site corrigé, sous forme d'<strong>archive <code>.zip</code></strong>.</p>
 <p>L'archive contient le site complet et fonctionnel : il doit suffire de la décompresser et d'ouvrir le dossier dans un serveur local pour retrouver le site tel que vous l'avez rendu. Nommez-la <code>nom-prenom.zip</code>.</p>
 <p>N'y mettez pas les fichiers de travail : pas de <code>node_modules</code>, pas de <code>.DS_Store</code>, pas de dossier <code>.git</code>, pas d'images sources non utilisées. Un rendu propre fait partie du travail.</p>
-<blockquote><p>⚠️ <strong>Vous aurez tout de même besoin d'une version en ligne.</strong> PageSpeed Insights n'analyse que des URL publiques : sans site déployé, vous ne pourrez pas produire les relevés « après » demandés au point 1. Le plus simple est de forker le dépôt du sujet et d'activer GitHub Pages sur votre fork. Indiquez dans votre rapport l'adresse obtenue <strong>et celle de votre fork</strong> : la première permet de vérifier vos mesures, la seconde de lire votre historique de commits, qui est noté.</p></blockquote>
-<p>Travaillez donc sur ce fork avec des <strong>commits explicites</strong> : un commit = une optimisation. L'archive déposée sur Moodle est le rendu, l'historique du fork montre la démarche.</p>
+<p>Indiquez dans votre rapport <strong>les deux adresses</strong> de votre fork : celle du dépôt et celle du site publié (voir « Pour commencer » plus haut). La première permet de lire votre historique de commits, la seconde de vérifier vos mesures.</p>
+<p>Travaillez donc sur votre fork avec des <strong>commits explicites</strong> : un commit = une optimisation. L'archive déposée sur Moodle est le rendu, l'historique du fork montre la démarche.</p>
 <h3>4. Un rapport avant/après</h3>
 <p>3 à 5 pages, avec un tableau comparatif chiffré sur les six indicateurs du README, et pour chaque optimisation majeure : le problème, la correction, le gain mesuré.</p>
 <h2>Contraintes</h2>
@@ -123,6 +136,7 @@
 <div class="docs-table"><table>
 <thead><tr><th>Étape</th><th>Durée</th><th>Contenu</th></tr></thead>
 <tbody>
+<tr><td>0</td><td>10 min</td><td>Fork, clone, publication sur GitHub Pages</td></tr>
 <tr><td>1</td><td>30 min</td><td>Audit initial, relevés, captures</td></tr>
 <tr><td>2</td><td>30 min</td><td>Chasse aux problèmes réseau et images (gain le plus rapide)</td></tr>
 <tr><td>3</td><td>1 h</td><td>Chasse aux problèmes JavaScript</td></tr>
