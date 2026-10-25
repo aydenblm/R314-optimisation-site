@@ -75,11 +75,15 @@
     var list = UIKit.qs('#motscles');
     if (!list) return;
 
-    list.innerHTML = '';
+    // Les options sont construites hors du DOM, puis insérées d'un seul coup.
+    var frag = document.createDocumentFragment();
     for (var i = 0; i < TAGS.length; i++) {
-      // On ajoute chaque entrée au fur et à mesure pour garder l'ordre.
-      list.innerHTML += '<option value="' + TAGS[i] + '"></option>';
+      var option = document.createElement('option');
+      option.value = TAGS[i];
+      frag.appendChild(option);
     }
+    list.textContent = '';
+    list.appendChild(frag);
   }
 
   /* Construit le calendrier d'activité : 53 semaines de 7 jours, la teinte de
@@ -152,40 +156,74 @@
                            ' sur ' + cards.length;
       }
     }
+
+    equalizeCards();
   }
 
-  /* Aligne la hauteur des cartes et anime leur arrivée dans le viewport. */
-  function revealCards() {
+  /* Aligne la hauteur des cartes sur la plus grande. Toutes les lectures de
+     hauteur sont faites avant les écritures : un seul calcul de mise en page. */
+  function equalizeCards() {
     var cards = UIKit.qsa('.card');
+    var i;
 
-    for (var i = 0; i < cards.length; i++) {
-      var rect = cards[i].getBoundingClientRect();
-
-      // Hauteur de la plus grande carte, pour garder une grille régulière.
-      var tallest = 0;
-      var all = UIKit.qsa('.card');
-      for (var j = 0; j < all.length; j++) {
-        if (all[j].offsetHeight > tallest) {
-          tallest = all[j].offsetHeight;
-        }
-      }
+    for (i = 0; i < cards.length; i++) {
+      cards[i].style.minHeight = '';
+    }
+    var tallest = 0;
+    for (i = 0; i < cards.length; i++) {
+      tallest = Math.max(tallest, cards[i].offsetHeight);
+    }
+    for (i = 0; i < cards.length; i++) {
       cards[i].style.minHeight = tallest + 'px';
-
-      if (rect.top < window.innerHeight - 40) {
-        UIKit.cls(cards[i], 'visible', true);
-        cards[i].style.transform = 'translateY(0px)';
-      } else {
-        cards[i].style.transform = 'translateY(24px)';
-      }
     }
+  }
 
-    // Les cases du calendrier apparaissent progressivement à l'approche.
-    var jours = UIKit.qsa('.cal-day');
-    for (var k = 0; k < jours.length; k++) {
-      var box = jours[k].getBoundingClientRect();
-      var d = Math.abs(box.top - window.innerHeight / 2);
-      jours[k].style.opacity = Math.max(0.15, 1 - d / window.innerHeight);
-    }
+  /* Anime l'arrivée des cartes dans le viewport. L'IntersectionObserver
+     évite d'écouter le scroll : le navigateur prévient quand une carte
+     franchit la ligne située 40 px au-dessus du bas de l'écran. */
+  function watchCards() {
+    var cards = UIKit.qsa('.card');
+    if (!cards.length || !('IntersectionObserver' in window)) return;
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var card = entry.target;
+        var revealed = entry.boundingClientRect.top < entry.rootBounds.bottom;
+        UIKit.cls(card, 'visible', revealed);
+        card.style.transform = revealed ? 'translateY(0px)' : 'translateY(24px)';
+      });
+    }, { rootMargin: '0px 0px -40px 0px' });
+
+    cards.forEach(function (card) { observer.observe(card); });
+  }
+
+  /* Les cases du calendrier apparaissent progressivement à l'approche.
+     Les cases d'une même ligne ont la même position verticale : on ne mesure
+     que les 7 premières (une par ligne) et on publie 7 variables CSS, que
+     les règles .cal-day:nth-child(7n+…) appliquent à toute la grille. */
+  function updateCalendar() {
+    var host = UIKit.qs('#calendrier');
+    if (!host) return;
+
+    var firstCol = UIKit.qsa('.cal-day', host).slice(0, 7);
+    var tops = firstCol.map(function (cell) {
+      return cell.getBoundingClientRect().top;
+    });
+    tops.forEach(function (top, row) {
+      var d = Math.abs(top - window.innerHeight / 2);
+      host.style.setProperty('--o' + row, Math.max(0.15, 1 - d / window.innerHeight));
+    });
+  }
+
+  /* Au plus une mise à jour par image affichée, et écoute passive. */
+  var updatePending = false;
+  function scheduleCalendarUpdate() {
+    if (updatePending) return;
+    updatePending = true;
+    window.requestAnimationFrame(function () {
+      updatePending = false;
+      updateCalendar();
+    });
   }
 
   /* Affiche les images une fois chargées. */
@@ -205,12 +243,20 @@
     buildKeywordIndex();
     buildActivityCalendar();
     watchImages();
-    revealCards();
+    equalizeCards();
+    watchCards();
+    updateCalendar();
     var champ = UIKit.qs('#q');
     if (champ) champ.addEventListener('input', filterGallery);
   });
 
-  window.addEventListener('scroll', revealCards);
-  window.addEventListener('resize', revealCards);
-  window.addEventListener('load', revealCards);
+  window.addEventListener('scroll', scheduleCalendarUpdate, { passive: true });
+  window.addEventListener('resize', function () {
+    equalizeCards();
+    scheduleCalendarUpdate();
+  });
+  window.addEventListener('load', function () {
+    equalizeCards();
+    updateCalendar();
+  });
 })();
